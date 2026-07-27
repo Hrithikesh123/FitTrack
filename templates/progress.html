@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>FitTrack - Progress</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<!-- HEADER -->
+
+<header>
+
+    <h1>FitTrack 💪</h1>
+
+    <p>
+        See how you're improving over time.
+    </p>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/workouts">
+            Workouts
+        </a>
+
+        <a href="/goals">
+            Goals
+        </a>
+
+        <a href="/progress">
+            Progress
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- WEEKLY GOALS -->
+
+<div class="card">
+
+    <h2>📅 This Week</h2>
+
+    <p>
+        You completed
+        <strong>{{ completed_goals }}</strong>
+        out of
+        <strong>{{ weekly_total }}</strong>
+        goals.
+    </p>
+
+</div>
+
+
+<!-- WEEKLY PROGRESS CHART -->
+
+<div class="card">
+
+    <h2>📈 Weekly Progress</h2>
+
+    <div class="weekly-chart">
+
+        {% for day in weekly_progress %}
+
+            <div class="day">
+
+                <div class="bar-container">
+
+                    <div
+                        class="bar"
+                        style="height: {{ day.progress }}%;"
+                    >
+                    </div>
+
+                </div>
+
+                <strong>
+                    {{ day.progress }}%
+                </strong>
+
+                <p>
+                    {{ day.date }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- GOALS COMPLETED -->
+
+<div class="card">
+
+    <h2>🎯 Goals Completed</h2>
+
+    <p class="streak">
+        {{ completed_goals }}
+    </p>
+
+</div>
+
+
+<!-- EXERCISES COMPLETED -->
+
+<div class="card">
+
+    <h2>🏋️ Exercises Completed</h2>
+
+    <p class="streak">
+        {{ completed_exercises }}
+    </p>
+
+</div>
+
+
+<!-- WORKOUT CATEGORY BREAKDOWN -->
+
+<div class="card">
+
+    <h2>🏋️ Workout Breakdown</h2>
+
+
+    <!-- STRENGTH -->
+
+    <p>
+        💪 Strength:
+        <strong>
+            {{ category_counts["Strength"] }}
+        </strong>
+    </p>
+
+    <div class="progress-container">
+
+        <div
+            class="progress-bar"
+            style="width: {{
+                (
+                    category_counts["Strength"]
+                    /
+                    (
+                        category_counts["Strength"]
+                        + category_counts["Cardio"]
+                        + category_counts["Flexibility"]
+                        + category_counts["HIIT"]
+                    )
+                    * 100
+                )
+                if (
+                    category_counts["Strength"]
+                    + category_counts["Cardio"]
+                    + category_counts["Flexibility"]
+                    + category_counts["HIIT"]
+                ) > 0
+                else 0
+            }}%;"
+        >
+        </div>
+
+    </div>
+
+
+    <!-- CARDIO -->
+
+    <p>
+        🏃 Cardio:
+        <strong>
+            {{ category_counts["Cardio"] }}
+        </strong>
+    </p>
+
+    <div class="progress-container">
+
+        <div
+            class="progress-bar"
+            style="width: {{
+                (
+                    category_counts["Cardio"]
+                    /
+                    (
+                        category_counts["Strength"]
+                        + category_counts["Cardio"]
+                        + category_counts["Flexibility"]
+                        + category_counts["HIIT"]
+                    )
+                    * 100
+                )
+                if (
+                    category_counts["Strength"]
+                    + category_counts["Cardio"]
+                    + category_counts["Flexibility"]
+                    + category_counts["HIIT"]
+                ) > 0
+                else 0
+            }}%;"
+        >
+        </div>
+
+    </div>
+
+
+    <!-- FLEXIBILITY -->
+
+    <p>
+        🧘 Flexibility:
+        <strong>
+            {{ category_counts["Flexibility"] }}
+        </strong>
+    </p>
+
+    <div class="progress-container">
+
+        <div
+            class="progress-bar"
+            style="width: {{
+                (
+                    category_counts["Flexibility"]
+                    /
+                    (
+                        category_counts["Strength"]
+                        + category_counts["Cardio"]
+                        + category_counts["Flexibility"]
+                        + category_counts["HIIT"]
+                    )
+                    * 100
+                )
+                if (
+                    category_counts["Strength"]
+                    + category_counts["Cardio"]
+                    + category_counts["Flexibility"]
+                    + category_counts["HIIT"]
+                ) > 0
+                else 0
+            }}%;"
+        >
+        </div>
+
+    </div>
+
+
+    <!-- HIIT -->
+
+    <p>
+        ⚡ HIIT:
+        <strong>
+            {{ category_counts["HIIT"] }}
+        </strong>
+    </p>
+
+    <div class="progress-container">
+
+        <div
+            class="progress-bar"
+            style="width: {{
+                (
+                    category_counts["HIIT"]
+                    /
+                    (
+                        category_counts["Strength"]
+                        + category_counts["Cardio"]
+                        + category_counts["Flexibility"]
+                        + category_counts["HIIT"]
+                    )
+                    * 100
+                )
+                if (
+                    category_counts["Strength"]
+                    + category_counts["Cardio"]
+                    + category_counts["Flexibility"]
+                    + category_counts["HIIT"]
+                ) > 0
+                else 0
+            }}%;"
+        >
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CURRENT STREAK -->
+
+<div class="card">
+
+    <h2>🔥 Current Streak</h2>
+
+    <p class="streak">
+        {{ current_streak }} Days
+    </p>
+
+</div>
+
+
+<!-- BEST STREAK -->
+
+<div class="card">
+
+    <h2>🏆 Best Streak</h2>
+
+    <p class="streak">
+        {{ best_streak }} Days
+    </p>
+
+</div>
+```
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>FitTrack - Goals</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<!-- HEADER -->
+
+<header>
+
+    <h1>FitTrack 💪</h1>
+
+    <p>
+        Set goals. Build habits. Stay consistent.
+    </p>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/workouts">
+            Workouts
+        </a>
+
+        <a href="/goals">
+            Goals
+        </a>
+
+        <a href="/progress">
+            Progress
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- GOALS -->
+
+<div class="card">
+
+    <h2>🎯 My Daily Goals</h2>
+
+    {% if goals|length == 0 %}
+
+        <p>
+            You haven't added any goals yet.
+        </p>
+
+    {% else %}
+
+        {% for goal in goals %}
+
+            <div class="goal">
+
+                <!-- GOAL INFORMATION -->
+
+                <div>
+
+                    {% if goal["completed"] %}
+
+                        ✅
+
+                    {% else %}
+
+                        ☐
+
+                    {% endif %}
+
+                    <strong>
+                        {{ goal["goal"] }}
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        {{ goal["date"] }}
+                    </small>
+
+                </div>
+
+
+                <!-- GOAL ACTIONS -->
+
+                <div>
+
+                    {% if not goal["completed"] %}
+
+                        <a
+                            href="{{ url_for(
+                                'complete_goal',
+                                goal_index=loop.index0
+                            ) }}"
+                        >
+
+                            <button type="button">
+                                Complete
+                            </button>
+
+                        </a>
+
+                    {% endif %}
+
+
+                    <a
+                        href="{{ url_for(
+                            'edit_goal',
+                            goal_index=loop.index0
+                        ) }}"
+                    >
+
+                        <button type="button">
+                            Edit
+                        </button>
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for(
+                            'delete_goal',
+                            goal_index=loop.index0
+                        ) }}"
+                    >
+
+                        <button type="button">
+                            Delete
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <!-- ADD GOAL FORM -->
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="goal"
+            placeholder="Enter a new goal..."
+            required
+        >
+
+        <button type="submit">
+            + Add Goal
+        </button>
+
+    </form>
+
+</div>
+```
+
+</div>
+
+</body>
+
+</html>

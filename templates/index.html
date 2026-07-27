@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>FitTrack - Dashboard</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<!-- HEADER -->
+
+<header>
+
+    <h1>FitTrack 💪</h1>
+
+    <p>
+        Welcome, {{ username }}!
+    </p>
+
+    <p>
+        Track your workouts. Build better habits.
+    </p>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/workouts">
+            Workouts
+        </a>
+
+        <a href="/goals">
+            Goals
+        </a>
+
+        <a href="/progress">
+            Progress
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- TODAY'S GOALS -->
+
+<div class="card">
+
+    <h2>🎯 Today's Goals</h2>
+
+    {% if goals|length == 0 %}
+
+        <p>
+            You don't have any goals for today.
+        </p>
+
+    {% else %}
+
+        {% for goal in goals %}
+
+            <div class="goal">
+
+                {% if goal["completed"] %}
+
+                    <span>
+                        ✅ {{ goal["goal"] }}
+                    </span>
+
+                {% else %}
+
+                    <span>
+                        ☐ {{ goal["goal"] }}
+                    </span>
+
+                    <a
+                        href="{{ url_for(
+                            'complete_goal',
+                            goal_index=loop.index0
+                        ) }}"
+                    >
+
+                        <button type="button">
+                            Complete
+                        </button>
+
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <!-- ADD GOAL FORM -->
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="goal"
+            placeholder="Enter a new goal..."
+            required
+        >
+
+        <button type="submit">
+            + Add Goal
+        </button>
+
+    </form>
+
+</div>
+
+
+<!-- TODAY'S PROGRESS -->
+
+<div class="card">
+
+    <h2>📊 Today's Progress</h2>
+
+    <p>
+        {{ progress }}% Complete
+    </p>
+
+    <div class="progress-container">
+
+        <div
+            class="progress-bar"
+            style="width: {{ progress }}%;"
+        >
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- WORKOUT STATISTICS -->
+
+<div class="card">
+
+    <h2>🏋️ Workout Statistics</h2>
+
+    <p>
+        💪 Total Exercises:
+        <strong>
+            {{ total_exercises }}
+        </strong>
+    </p>
+
+    <p>
+        ✅ Completed Exercises:
+        <strong>
+            {{ completed_exercises }}
+        </strong>
+    </p>
+
+    {% if total_exercises > 0 %}
+
+        <p>
+            📊 Workout Completion:
+            <strong>
+                {{
+                    (
+                        completed_exercises
+                        / total_exercises
+                        * 100
+                    )|round|int
+                }}%
+            </strong>
+        </p>
+
+    {% else %}
+
+        <p>
+            No exercises added yet.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<!-- WORKOUT CATEGORIES -->
+
+<div class="card">
+
+    <h2>🏋️ Workout Categories</h2>
+
+    <p>
+        💪 Strength:
+        <strong>
+            {{ category_counts["Strength"] }}
+        </strong>
+    </p>
+
+    <p>
+        🏃 Cardio:
+        <strong>
+            {{ category_counts["Cardio"] }}
+        </strong>
+    </p>
+
+    <p>
+        🧘 Flexibility:
+        <strong>
+            {{ category_counts["Flexibility"] }}
+        </strong>
+    </p>
+
+    <p>
+        ⚡ HIIT:
+        <strong>
+            {{ category_counts["HIIT"] }}
+        </strong>
+    </p>
+
+</div>
+
+
+<!-- BEST STREAK -->
+
+<div class="card">
+
+    <h2>🔥 Best Streak</h2>
+
+    <p class="streak">
+        {{ best_streak }} Days
+    </p>
+
+</div>
+```
+
+</div>
+
+</body>
+
+</html>

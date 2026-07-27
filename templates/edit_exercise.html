@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FitTrack - Edit Exercise</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <header>
+
+        <h1>✏️ Edit Exercise</h1>
+
+        <p>Update your workout exercise.</p>
+
+    </header>
+
+
+    <div class="card">
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="exercise"
+                value="{{ exercise.exercise }}"
+                placeholder="Exercise name"
+                required
+            >
+
+
+            <input
+                type="number"
+                name="sets"
+                value="{{ exercise.sets }}"
+                placeholder="Sets"
+                min="1"
+                required
+            >
+
+
+            <input
+                type="number"
+                name="reps"
+                value="{{ exercise.reps }}"
+                placeholder="Reps"
+                min="1"
+                required
+            >
+
+
+            <select name="category" required>
+
+                <option value="">Choose a category</option>
+
+                <option
+                    value="Strength"
+                    {% if exercise.category == "Strength" %}selected{% endif %}
+                >
+                    💪 Strength
+                </option>
+
+                <option
+                    value="Cardio"
+                    {% if exercise.category == "Cardio" %}selected{% endif %}
+                >
+                    🏃 Cardio
+                </option>
+
+                <option
+                    value="Flexibility"
+                    {% if exercise.category == "Flexibility" %}selected{% endif %}
+                >
+                    🧘 Flexibility
+                </option>
+
+                <option
+                    value="HIIT"
+                    {% if exercise.category == "HIIT" %}selected{% endif %}
+                >
+                    ⚡ HIIT
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                💾 Save Changes
+            </button>
+
+        </form>
+
+
+        <br>
+
+
+        <a href="{{ url_for('workouts') }}">
+
+            <button type="button">
+                ← Back to Workouts
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

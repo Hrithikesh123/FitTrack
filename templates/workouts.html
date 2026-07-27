@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>FitTrack - Workouts</title>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<!-- HEADER -->
+
+<header>
+
+    <h1>FitTrack 💪</h1>
+
+    <p>
+        Track your workouts and exercises.
+    </p>
+
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/workouts">
+            Workouts
+        </a>
+
+        <a href="/goals">
+            Goals
+        </a>
+
+        <a href="/progress">
+            Progress
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- WORKOUTS -->
+
+<div class="card">
+
+    <h2>🏋️ My Workouts</h2>
+
+    {% if workout|length == 0 %}
+
+        <p>
+            You haven't added any exercises yet.
+        </p>
+
+    {% else %}
+
+        {% for exercise in workout %}
+
+            <div class="goal">
+
+                <!-- EXERCISE INFORMATION -->
+
+                <div>
+
+                    {% if exercise["completed"] %}
+
+                        ✅
+
+                    {% else %}
+
+                        ☐
+
+                    {% endif %}
+
+                    <strong>
+                        {{ exercise["exercise"] }}
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        {{ exercise["sets"] }} Sets ×
+                        {{ exercise["reps"] }} Reps
+                    </small>
+
+                    <br>
+
+                    <small>
+                        Category:
+                        {{ exercise["category"] | default("Other") }}
+                    </small>
+
+                </div>
+
+
+                <!-- EXERCISE ACTIONS -->
+
+                <div>
+
+                    {% if not exercise["completed"] %}
+
+                        <a
+                            href="{{ url_for(
+                                'complete_exercise',
+                                exercise_index=loop.index0
+                            ) }}"
+                        >
+
+                            <button type="button">
+                                Complete
+                            </button>
+
+                        </a>
+
+                    {% endif %}
+
+
+                    <a
+                        href="{{ url_for(
+                            'edit_exercise',
+                            exercise_index=loop.index0
+                        ) }}"
+                    >
+
+                        <button type="button">
+                            Edit
+                        </button>
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for(
+                            'delete_exercise',
+                            exercise_index=loop.index0
+                        ) }}"
+                    >
+
+                        <button type="button">
+                            Delete
+                        </button>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <!-- ADD EXERCISE FORM -->
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="exercise"
+            placeholder="Enter exercise name..."
+            required
+        >
+
+        <input
+            type="number"
+            name="sets"
+            placeholder="Sets"
+            min="1"
+            required
+        >
+
+        <input
+            type="number"
+            name="reps"
+            placeholder="Reps"
+            min="1"
+            required
+        >
+
+        <select name="category" required>
+
+            <option value="">
+                Choose a category
+            </option>
+
+            <option value="Strength">
+                💪 Strength
+            </option>
+
+            <option value="Cardio">
+                🏃 Cardio
+            </option>
+
+            <option value="Flexibility">
+                🧘 Flexibility
+            </option>
+
+            <option value="HIIT">
+                ⚡ HIIT
+            </option>
+
+        </select>
+
+
+        <button type="submit">
+            + Add Exercise
+        </button>
+
+    </form>
+
+</div>
+```
+
+</div>
+
+</body>
+
+</html>
