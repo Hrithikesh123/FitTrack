@@ -1,7 +1,8 @@
-
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
 from datetime import date, timedelta
+
+from database import init_db
 
 app = Flask(__name__)
 
@@ -10,6 +11,8 @@ app.secret_key = "fittrack-secret-key"
 
 DATABASE = "fittrack.db"
 
+# Initialize the database and create tables if they don't exist
+init_db()
 
 # =========================================================
 # DATABASE CONNECTION
